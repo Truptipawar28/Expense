@@ -1,42 +1,62 @@
-import { Fragment } from "react";
-import { Container, Nav, Navbar } from "react-bootstrap";
-// import classes from './Navigation.module.css'
-import logoImage from '../assets/logo.jpg';
+import classes from './NavBar.module.css'
+import { NavLink } from "react-router-dom";
+// import logoImage from '../assets/logo.jpg';
 
 const NavBar = () => {
     return (
-        <Fragment>
-            <Navbar
-            // expand="lg"
-            bg="light"
-            variant="light"
-            className="p-2 shadow bg-success"
-            // className="row col-12 d-flex justify-content-center text-white"
-            >
-                <Container>
-                    <Navbar.Brand href="#home" className="fs-2 fst-italic">
-                        <img 
-                        src={logoImage}
-                        height='40'
-                        alt=""
-                        loading="lazy"
-                        />
-                        MyWebLink
-                    </Navbar.Brand>
-                    <Nav className="ms-auto">
-                        <Nav.Link href="#home" className="me-5 nav-item fs-5">
+        <div className={classes.mainNav}>
+            <nav>
+                <ul>
+                    <li>
+                        <NavLink
+                        to='/home'
+                        className={classes.active}
+                        >
                             Home
-                        </Nav.Link>
-                        <Nav.Link href="#products" className="me-5 nav-item fs-5">
-                            Products
-                        </Nav.Link>
-                        <Nav.Link href="#aboutus" className="me-5 nav-item fs-5">
-                            About Us
-                        </Nav.Link>
-                    </Nav>
-                </Container>
-            </Navbar>
-        </Fragment>
+                        </NavLink>
+                    </li>
+                    <li>
+            <NavLink
+              to='/expenses'
+              className={classes.active}
+            >
+              Expenses
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to='/about'
+              className={classes.active}
+            >
+              About Us
+            </NavLink>
+          </li>
+
+          <li>
+            <NavLink
+              to='/profile'
+              className={classes.active}
+            >
+              User Profile
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to='/login'
+              className={classes.active}
+            >
+              Login
+            </NavLink>
+          </li>
+          <li>
+          <div className={classes.button}>
+        <button>Logout</button>
+      </div>
+          </li>
+        </ul>
+            </nav>
+            
+        </div>
     )
 };
 

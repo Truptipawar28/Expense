@@ -1,8 +1,15 @@
-import classes from './Home.module.css';
+import { useContext } from 'react';
+import AuthContext from '../Store/AuthContext';
 
 const Home = () => {
-    return (
-        <h1 className={classes.heading}>Welcome To Expense Tracker</h1>
+    
+        const authCtx = useContext(AuthContext);
+        const isLoggedIn = authCtx.isLoggedIn;
+        return (
+            <div>
+            {isLoggedIn && <LoginMessage />}
+        {/* <h1 className={classes.heading}>Welcome To Expense Tracker</h1> */}
+        </div>
     )
 };
 
