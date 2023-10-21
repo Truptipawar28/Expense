@@ -1,7 +1,7 @@
 import { Fragment } from "react";
 import { Container, Nav, Navbar } from "react-bootstrap";
 // import classes from './Navigation.module.css'
-import logoImage from './assets/logo.jpg';
+import logoImage from '../assets/logo.jpg';
 
 const NavBar = () => {
     return (

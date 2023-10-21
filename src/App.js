@@ -1,13 +1,19 @@
 // import logo from './logo.svg';
-import './App.css';
-import NavBar from './components/NavBar';
-import LoginPage from './components/LoginPage';
+import NavBar from './components/Navbar/NavBar';
+import LoginPage from './components/LoginPage/LoginPage';
+import { useContext } from 'react';
+import AuthContext from './components/Store/AuthContext';
+// import { Route } from 'react-router-dom';
 
 function App() {
+
+ const authCtx = useContext(AuthContext);
+
   return (
-    <div className="App">
-      <NavBar />
-      <LoginPage />
+    <div>
+       <NavBar />
+{authCtx.isLoggedIn && <h1>Welcome to Expense tracker</h1>}
+     {!authCtx.isLoggedIn && <LoginPage />}
     </div>
   );
 }

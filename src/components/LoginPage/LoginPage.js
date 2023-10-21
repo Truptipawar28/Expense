@@ -1,5 +1,6 @@
-import { useRef, useState } from 'react';
+import { useContext, useRef, useState } from 'react';
 import classes from './LoginPage.module.css';
+import AuthContext from '../Store/AuthContext';
 
 const LoginPage = () => {
 
@@ -8,9 +9,12 @@ const LoginPage = () => {
     const confirmPasswordInputRef = useRef();
 
     const [haveAccount, setHaveAccount] = useState (true);
+    const authCtx = useContext(AuthContext);
 
     const switchAuthModeHandler = () => {
-        setHaveAccount((prevState) => !prevState)
+        setHaveAccount((prevState) => {
+            return !prevState
+        })
     }
 
     let url;
@@ -29,32 +33,37 @@ const LoginPage = () => {
         }
        }
 
-       try {
-        const response = await fetch(url, {
-            method: 'POST',
-            body: JSON.stringify({
-                email: emailInputRef.current.value,
-                password: passwordInputRef.current.value,
-                returnSecureToken: true,
-            }),
-
-            headers: {
-                'Content-Type' : 'application/json'
-            }
+       fetch(url, {
+        method: "POST",
+        body: JSON.stringify({
+          email: emailInputRef.current.value,
+          password: passwordInputRef.current.value,
+          returnSecureToken: true,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((response) => {
+          if (response.ok) {
+            return response.json();
+          } else {
+            return response.json().then((data) => {
+              let errorMesssage = "Authentication Failed";
+  
+              throw new Error(errorMesssage);
+            });
+          }
+        })
+        .then((data) => {
+          authCtx.login(data.idToken);
+          console.log(data.idToken);
+          console.log("user has successfully signed up");
+        })
+        .catch((err) => {
+          alert(err.message);
         });
-        
-        if(response.ok) {
-            const data = await response.json();
-            localStorage.setItem('idToken', JSON.stringify(data));
-            setHaveAccount(true);
-            } else {
-                const data = await response.json();
-                throw data.error;
-                }
-            } catch(err) {
-                alert(err.message);
-            }
-    };
+  };
         
 
     return(
@@ -73,6 +82,7 @@ const LoginPage = () => {
 
         <div className={classes.control}>
             <label htmlFor="password">Password -</label>
+            
             <input 
             id="password" 
             type="password" 
@@ -82,13 +92,18 @@ const LoginPage = () => {
         </div>
 
         <div className={classes.control}>
+        {!haveAccount && (
+            <div>
             <label htmlFor="confirm-password">Confirm Password -</label>
+            
             <input 
             id="confirm-password" 
             type="password" 
             placeholder="Confirm Password"
             ref={confirmPasswordInputRef}
             />
+            </div>
+        )}
              {/* {errorMessage && <p className={classes.error}>{errorMessage}</p>} */}
         </div>
 
