@@ -1,4 +1,4 @@
-import React, { useRef, useContext} from 'react';
+import React, { useRef, useContext, useState} from 'react';
 import AuthContext from '../Store/AuthContext';
 
 import classes from './UserProfileForm.module.css';
@@ -8,7 +8,7 @@ const UserProfileForm = () => {
 
     const inputNameRef = useRef("");
     const inputImageRef = useRef("");
-  
+
     const profileSubmitHandler = (e) => {
       e.preventDefault();
       const enteredName = inputNameRef.current.value;
@@ -22,7 +22,8 @@ const UserProfileForm = () => {
             idToken: authCtx.token,
             displayName: enteredName,
             photoUrl: enteredImage,
-            deleteAttribute: ["DISPLAY_NAME", "PHOTO_URL"],
+            // deleteAttribute: ["DISPLAY_NAME", "PHOTO_URL"],
+            deleteAttribute: [],
             returnSecureToken: true,
           }),
           headers: {
@@ -34,18 +35,18 @@ const UserProfileForm = () => {
           if (response.ok) {
             return response.json();
           } else {
-            let errorMesssage = "Authentication Failed";
-            throw new Error(errorMesssage);
+            let errorMessage = "Authentication Failed";
+            throw new Error(errorMessage);
           }
         })
         .then((data) => {
-          authCtx.completeProfile();
+          // authCtx.completeProfile();
           console.log(data);
           alert("profile updated successfully");
         })
         .catch((err) => {
-          console.error(err)
-          alert(err.message);
+          // console.error(err);
+          alert(err.messaqge);
         });
     };
 
@@ -56,9 +57,9 @@ const UserProfileForm = () => {
       </div>
       <div className={classes.formBody}>
         <label>Full Name:</label>
-        <input type='text' ref={inputNameRef} />
-        <label>Profile Photo URL:</label>
-        <input type='text' ref={inputImageRef} />
+        <input type='text' ref={inputNameRef} defaultValue={authCtx.displayName}/>
+        <label htmlFor="formInput">Profile Photo URL:</label>
+        <input type='text' ref={inputImageRef} defaultValue={authCtx.imageUrl}/>
         <div className={classes.button}>
           <button type='submit'>Update</button>
         </div>

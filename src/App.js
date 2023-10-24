@@ -26,7 +26,7 @@ function App() {
       <Route 
       path='/profile'
       element={
-        isLoggedIn ? <UserProfile /> : <Navigate to='/login' replace />
+        isLoggedIn ? <UserProfile /> : <Navigate to='/profile' replace />
       }
       />
       <Route path='/login' element={<LoginPage />} />
